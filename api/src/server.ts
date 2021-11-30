@@ -12,6 +12,7 @@ import logger from './logger';
 import emitter from './emitter';
 import checkForUpdate from 'update-check';
 import pkg from '../package.json';
+import { createWebsocketServer } from './websocket';
 
 export async function createServer(): Promise<http.Server> {
 	const server = http.createServer(await createApp());
@@ -157,4 +158,8 @@ export async function startServer(): Promise<void> {
 				throw err;
 			}
 		});
+
+	if (env.WEBSOCKET_ENABLED) {
+		createWebsocketServer(server);
+	}
 }
